@@ -1,0 +1,11 @@
+C:\Users\Uran\Desktop\Dolce_Vita\Dolce_Vita\bin\Debug\netcoreapp2.0\Dolce_Vita.deps.json
+C:\Users\Uran\Desktop\Dolce_Vita\Dolce_Vita\bin\Debug\netcoreapp2.0\Dolce_Vita.runtimeconfig.json
+C:\Users\Uran\Desktop\Dolce_Vita\Dolce_Vita\bin\Debug\netcoreapp2.0\Dolce_Vita.runtimeconfig.dev.json
+C:\Users\Uran\Desktop\Dolce_Vita\Dolce_Vita\bin\Debug\netcoreapp2.0\Dolce_Vita.dll
+C:\Users\Uran\Desktop\Dolce_Vita\Dolce_Vita\obj\Debug\netcoreapp2.0\Dolce_Vita.csprojAssemblyReference.cache
+C:\Users\Uran\Desktop\Dolce_Vita\Dolce_Vita\obj\Debug\netcoreapp2.0\Dolce_Vita.csproj.CoreCompileInputs.cache
+C:\Users\Uran\Desktop\Dolce_Vita\Dolce_Vita\obj\Debug\netcoreapp2.0\Dolce_Vita.AssemblyInfoInputs.cache
+C:\Users\Uran\Desktop\Dolce_Vita\Dolce_Vita\obj\Debug\netcoreapp2.0\Dolce_Vita.AssemblyInfo.cs
+C:\Users\Uran\Desktop\Dolce_Vita\Dolce_Vita\bin\Debug\netcoreapp2.0\Dolce_Vita.pdb
+C:\Users\Uran\Desktop\Dolce_Vita\Dolce_Vita\obj\Debug\netcoreapp2.0\Dolce_Vita.dll
+C:\Users\Uran\Desktop\Dolce_Vita\Dolce_Vita\obj\Debug\netcoreapp2.0\Dolce_Vita.pdb
