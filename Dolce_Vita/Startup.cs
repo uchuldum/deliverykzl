@@ -61,7 +61,7 @@ namespace Dolce_Vita
             {
                routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Admin}/{action=Cabinet}/{id?}");
                 
             });
         }
