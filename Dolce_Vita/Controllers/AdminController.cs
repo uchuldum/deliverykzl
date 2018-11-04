@@ -11,7 +11,7 @@ using System.Collections;
 
 namespace Dolce_Vita.Controllers
 {
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         DolceVitaContext db;
@@ -36,18 +36,13 @@ namespace Dolce_Vita.Controllers
         }
 
 
-       /* [HttpGet]
-        public IActionResult GetCategory()
-        {
-           return new ObjectResult(db.Categories);
-        }
-        */
+        //Получение списка категорий
         [HttpGet]
         public async Task<IList> GetCategory()
         {
             return await db.Categories.ToListAsync();
         }
-
+        //Добавление категории
         [HttpPost]
         [ActionName("AddCategory")]
         public async Task<IActionResult> AddCategory(string name)
@@ -62,7 +57,24 @@ namespace Dolce_Vita.Controllers
 
             return RedirectToAction("Categories", "Admin");
         }
+        //Удаление категории
+        [HttpPost]
+        [ActionName("DelCategory")]
+        public async Task<IActionResult> DelCategory([FromBody] int id)
+        {
+            Category category = await db.Categories.FirstOrDefaultAsync(x => x.Id == Convert.ToInt32(id));
 
+
+            /*if (category != null)
+            {
+                db.Remove(category);
+                await db.SaveChangesAsync();
+            }
+            return RedirectToAction("Categories", "Admin");
+          */
+            return Json(id);
+
+        }
 
 
         //Dishes

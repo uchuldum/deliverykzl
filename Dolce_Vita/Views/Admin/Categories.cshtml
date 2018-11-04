@@ -15,6 +15,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
+           
+            
+
             $.ajax({
                 url: "http://localhost:49228/Admin/GetCategory/",
                 type: "GET",
@@ -24,7 +27,17 @@
                     if (data.length > 0) {
                         $.each(data, function (i, item) {
                             $(".item").append(
-                                "<p>" + item.id + " " + item.name + "</p>"
+                                "<ul class='item-row'>" +
+                                "<li id='item-cell'>" + item.name +
+
+                                "</li>" +
+                                "<li id='item-cell' class = 'delete'>" + "<span class = '" + item.id +"'>" + "Удалить" + "</span>"+
+
+                                "</li>" +
+                                "<li id='item-cell' class = 'update'>" + "<span class = '"+item.id+"'>" + "Изменить" + "</span>"  +
+
+                                "</li>" +
+                                "</ul>"
 
                             );
                         });
@@ -37,13 +50,43 @@
                 }
 
             });
+            $(document).on("click", ".delete", function () {
+                var id = $(this).children().attr('class');
+                console.log(id);
+
+
+
+
+                $.ajax({
+                    url: "http://localhost:49228/Admin/DelCategory/",
+                    type: "POST",
+                   
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                       Id: id,
+                    }),
+                    dataType : "json",
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function () {
+                        alert("error");
+                    },
+                    
+                });
+            });
+            $(document).on("click", ".update", function () {
+                var id = $(this).children().attr('class');
+                console.log(id);
+            });
         });
+        
     </script>
 </head>
 <body>
 
+    
 
-   
     <div class="item">
 
     </div>
@@ -57,6 +100,31 @@
             <input type="submit" value="Добавить" />
         </form>
     </div>
+
+    <style>
+        .item {
+            display: table;
+        }
+
+        .item-row {
+            display: table-row;
+       
+            height: 25px;
+        }
+
+        #item-cell {
+            display: table-cell;
+            padding: 0px 30px;
+        }
+    </style>
+
+
+
+    
+
+
+
+
 </body>
 </html>
 
