@@ -11,7 +11,7 @@ using System.Collections;
 
 namespace Dolce_Vita.Controllers
 {
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         DolceVitaContext db;
@@ -50,7 +50,7 @@ namespace Dolce_Vita.Controllers
             if (name == null)
                 return BadRequest();
 
-            await  db.Categories.AddAsync(new Category { Name = name });
+            await db.Categories.AddAsync(new Category { Name = name });
             await db.SaveChangesAsync(); 
             
             
@@ -60,20 +60,17 @@ namespace Dolce_Vita.Controllers
         //Удаление категории
         [HttpPost]
         [ActionName("DelCategory")]
-        public async Task<IActionResult> DelCategory([FromBody] int id)
+        public async Task<IList> DelCategory([FromBody] Category cat)
         {
-            Category category = await db.Categories.FirstOrDefaultAsync(x => x.Id == Convert.ToInt32(id));
+            Category category = await db.Categories.FirstOrDefaultAsync(x => x.Id == cat.Id);
 
 
-            /*if (category != null)
+            if (category != null)
             {
                 db.Remove(category);
                 await db.SaveChangesAsync();
             }
-            return RedirectToAction("Categories", "Admin");
-          */
-            return Json(id);
-
+            return await db.Categories.ToListAsync();
         }
 
 

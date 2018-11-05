@@ -15,7 +15,29 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-           
+
+            function getcategories(data) {
+                $(".item-row").remove();
+                if (data.length >= 0) {
+                    $.each(data, function (i, item) {
+                        $(".item").append(
+                            "<ul class='item-row'>" +
+                            "<li id='item-cell'>" + item.name +
+
+                            "</li>" +
+                            "<li id='item-cell' class = 'delete'>" + "<span class = '" + item.id + "'>" + "Удалить" + "</span>" +
+
+                            "</li>" +
+                            "<li id='item-cell' class = 'update'>" + "<span class = '" + item.id + "'>" + "Изменить" + "</span>" +
+
+                            "</li>" +
+                            "</ul>"
+
+                        );
+                    });
+                }
+                else { alert("noone"); }
+            }
             
 
             $.ajax({
@@ -23,26 +45,7 @@
                 type: "GET",
                 contentType: "application/json",
                 success: function (data) {
-                    console.log(data.length);
-                    if (data.length > 0) {
-                        $.each(data, function (i, item) {
-                            $(".item").append(
-                                "<ul class='item-row'>" +
-                                "<li id='item-cell'>" + item.name +
-
-                                "</li>" +
-                                "<li id='item-cell' class = 'delete'>" + "<span class = '" + item.id +"'>" + "Удалить" + "</span>"+
-
-                                "</li>" +
-                                "<li id='item-cell' class = 'update'>" + "<span class = '"+item.id+"'>" + "Изменить" + "</span>"  +
-
-                                "</li>" +
-                                "</ul>"
-
-                            );
-                        });
-                    }
-                    else { alert("noone"); }
+                    getcategories(data);
                 },
                 error: function () {
                     alert("error");
@@ -52,22 +55,18 @@
             });
             $(document).on("click", ".delete", function () {
                 var id = $(this).children().attr('class');
-                console.log(id);
-
-
-
-
                 $.ajax({
                     url: "http://localhost:49228/Admin/DelCategory/",
                     type: "POST",
                    
                     contentType: "application/json",
                     data: JSON.stringify({
-                       Id: id,
+                        Id: id,
+                        Name : ""
                     }),
                     dataType : "json",
                     success: function (response) {
-                        console.log(response);
+                        getcategories(response);
                     },
                     error: function () {
                         alert("error");
