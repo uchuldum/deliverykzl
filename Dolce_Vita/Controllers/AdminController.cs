@@ -11,7 +11,7 @@ using System.Collections;
 
 namespace Dolce_Vita.Controllers
 {
-    [Authorize(Roles = "admin")]
+    // [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         DolceVitaContext db;
@@ -51,9 +51,9 @@ namespace Dolce_Vita.Controllers
                 return BadRequest();
 
             await db.Categories.AddAsync(new Category { Name = name });
-            await db.SaveChangesAsync(); 
-            
-            
+            await db.SaveChangesAsync();
+
+
 
             return RedirectToAction("Categories", "Admin");
         }
@@ -63,8 +63,6 @@ namespace Dolce_Vita.Controllers
         public async Task<IList> DelCategory([FromBody] Category cat)
         {
             Category category = await db.Categories.FirstOrDefaultAsync(x => x.Id == cat.Id);
-
-
             if (category != null)
             {
                 db.Remove(category);
@@ -80,5 +78,31 @@ namespace Dolce_Vita.Controllers
             return View();
         }
 
+        
+        
+       
+        //Get Dishes 
+        [HttpGet]
+        public async Task<IList> GetDishes(int? id)
+        {
+            if (id == null)
+                return await db.Dishes.ToListAsync();
+            else
+                return await db.Dishes.Where(x => x.CategoryID == id).Select(x => new { x.Id, x.Name, x.Price, x.Properties, x.CategoryID}).ToListAsync();
+        }
+
+        //Add Dish
+        [HttpPost]
+        [ActionName("AddDish")]
+        public async Task<IActionResult> AddDish(string name, decimal price, string property, int category)
+        {
+            if (name == null)
+                return NotFound();
+
+            await db.Dishes.AddAsync(new Dish { Name = name , Price = price, Properties = property, CategoryID = category});
+            await db.SaveChangesAsync();
+
+            return RedirectToAction("Categories", "Admin");
+        }
     }
 }

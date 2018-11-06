@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,7 +14,8 @@ namespace Dolce_Vita.Models
         public string Adress { get; set; } // Адрес клиента
         public string Properties { get; set; } //Свойства блюда(состав/описание) 
 
-        public int OrderId { get; set; } //Ссылка на заказ
-        public Order orders { get; set; }
+        public int OrdersID { get; set; }
+        [ForeignKey("OrdersID")] //Ссылка на заказ
+        public Order Orders { get; set; }
     }
 }

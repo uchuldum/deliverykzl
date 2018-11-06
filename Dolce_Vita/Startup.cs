@@ -59,10 +59,7 @@ namespace Dolce_Vita
 
             app.UseMvc(routes =>
             {
-               routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Admin}/{action=Cabinet}/{id?}");
-                
+                routes.MapRoute("default", "{controller=Admin}/{action=Cabinet}/{id?}");
             });
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,7 +13,8 @@ namespace Dolce_Vita.Models
         public decimal Price { get; set; } //Цена блюда
         public string Properties { get; set; } //Свойства блюда(состав/описание) 
 
-        public int CategoryId { get; set; } // ссылка на связанную модель Categories
-        public Category category { get; set; }
+        public int CategoryID { get; set; }
+        [ForeignKey("CategoryID")] // ссылка на связанную модель Categories
+        public Category Category { get; set; }
     }
 }

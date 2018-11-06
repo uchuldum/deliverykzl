@@ -22,6 +22,9 @@
                     $.each(data, function (i, item) {
                         $(".item").append(
                             "<ul class='item-row'>" +
+                            "<li id='item-cell'>" + item.id +
+
+                            "</li>" +
                             "<li id='item-cell'>" + item.name +
 
                             "</li>" +
@@ -29,6 +32,11 @@
 
                             "</li>" +
                             "<li id='item-cell' class = 'update'>" + "<span class = '" + item.id + "'>" + "Изменить" + "</span>" +
+
+                            "</li>" +
+
+                            "</li>" +
+                            "<li id='item-cell' class = 'dishes'>" + "<span class = '" + item.id + "'>" + "Блюда" + "</span>" +
 
                             "</li>" +
                             "</ul>"
@@ -39,9 +47,9 @@
                 else { alert("noone"); }
             }
             
-
+            //Получение категорий
             $.ajax({
-                url: "http://localhost:49228/Admin/GetCategory/",
+                url: "/Admin/GetCategory/",
                 type: "GET",
                 contentType: "application/json",
                 success: function (data) {
@@ -53,10 +61,11 @@
                 }
 
             });
+            //Удаление категории
             $(document).on("click", ".delete", function () {
                 var id = $(this).children().attr('class');
                 $.ajax({
-                    url: "http://localhost:49228/Admin/DelCategory/",
+                    url: "/Admin/DelCategory/",
                     type: "POST",
                    
                     contentType: "application/json",
@@ -74,9 +83,27 @@
                     
                 });
             });
+            //Изменение категории
             $(document).on("click", ".update", function () {
                 var id = $(this).children().attr('class');
                 console.log(id);
+            });
+            //Получение блюд по категории
+            $(document).on("click", ".dishes", function () {
+                var id = $(this).children().attr('class');
+                //console.log(id);
+                $.ajax({
+                    url: "/Admin/GetDishes/"+id,
+                    type: "GET",
+                    contentType: "application/json",
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function () {
+                        alert("error");
+                    },
+
+                });
             });
         });
         
@@ -96,6 +123,14 @@
         <form method="post" action="~/Admin/AddCategory">
             <div class="divname"><input class="form-control inputCon" type="text" name="Name" placeholder="Название категории" /></div>
 
+            <input type="submit" value="Добавить" />
+        </form>
+
+        <form method="post" action="~/Admin/AddDish">
+            <div class="divname"><input class="form-control inputCon" type="text" name="name" placeholder="Название блюда" /></div>
+            <div class="divname"><input class="form-control inputCon" type="text" name="price" placeholder="Цена блюда" /></div>
+            <div class="divname"><input class="form-control inputCon" type="text" name="property" placeholder="Описание блюда" /></div>
+            <div class="divname"><input class="form-control inputCon" type="text" name="category" placeholder="Номер категории" /></div>
             <input type="submit" value="Добавить" />
         </form>
     </div>
