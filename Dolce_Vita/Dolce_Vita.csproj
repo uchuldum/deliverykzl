@@ -20,4 +20,19 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\LoginPage\css\font-awesome.css" />
+    <None Include="wwwroot\LoginPage\css\style.css" />
+    <None Include="wwwroot\LoginPage\fonts\fontawesome-webfont.eot" />
+    <None Include="wwwroot\LoginPage\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\LoginPage\fonts\fontawesome-webfont.ttf" />
+    <None Include="wwwroot\LoginPage\fonts\fontawesome-webfont.woff" />
+    <None Include="wwwroot\LoginPage\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\LoginPage\fonts\FontAwesome.otf" />
+    <None Include="wwwroot\LoginPage\images\banner.jpg" />
+    <None Include="wwwroot\LoginPage\images\Thumbs.db" />
+    <None Include="wwwroot\LoginPage\index.html" />
+    <None Include="wwwroot\LoginPage\w3layouts-License.txt" />
+  </ItemGroup>
+
 </Project>

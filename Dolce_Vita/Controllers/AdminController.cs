@@ -11,7 +11,7 @@ using System.Collections;
 
 namespace Dolce_Vita.Controllers
 {
-    // [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         DolceVitaContext db;
@@ -30,7 +30,7 @@ namespace Dolce_Vita.Controllers
 
 
         //Categories
-        public IActionResult Categories()
+        public IActionResult Categories() 
         {
             return View(db.Categories.ToList());
         }
