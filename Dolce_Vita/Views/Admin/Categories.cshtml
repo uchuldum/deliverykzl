@@ -14,29 +14,32 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
+
         $(document).ready(function () {
 
-            function getcategories(data) {
-                $(".item-row").remove();
+            
+            //VIEW CATEGORIES
+            function viewcategories(data) {
+                $(".categories-row").remove();
                 if (data.length >= 0) {
                     $.each(data, function (i, item) {
-                        $(".item").append(
-                            "<ul class='item-row'>" +
-                            "<li id='item-cell'>" + item.id +
+                        $(".categories").append(
+                            "<ul class='categories-row' id = '"+item.id+"'>" +
+                            "<li id='categories-cell'>" + item.id +
 
                             "</li>" +
-                            "<li id='item-cell'>" + item.name +
+                            "<li id='categories-cell'>" + item.name +
 
                             "</li>" +
-                            "<li id='item-cell' class = 'delete'>" + "<span class = '" + item.id + "'>" + "Удалить" + "</span>" +
+                            "<li id='categories-cell' class = 'delete-category'>" + "<span class = '" + item.id + "'>" + "Удалить" + "</span>" +
 
                             "</li>" +
-                            "<li id='item-cell' class = 'update'>" + "<span class = '" + item.id + "'>" + "Изменить" + "</span>" +
+                            "<li id='categories-cell' class = 'update-category'>" + "<span class = '" + item.id + "'>" + "Изменить" + "</span>" +
 
                             "</li>" +
 
                             "</li>" +
-                            "<li id='item-cell' class = 'dishes'>" + "<span class = '" + item.id + "'>" + "Блюда" + "</span>" +
+                            "<li id='categories-cell'  >" + "<input type = 'checkbox'  id = 'dishes'  class = '" + item.id + "'>" + "Блюда" + "</span>" +
 
                             "</li>" +
                             "</ul>"
@@ -46,14 +49,46 @@
                 }
                 else { alert("noone"); }
             }
-            
+
+            //VIEW DISHES BY CATEGORY
+            function viewdishes(data) {
+                //$(".dishes-row").remove();
+                if (data.length >= 0) {
+                    $.each(data, function (i, item) {
+                        $("#" + item.categoryID + ".categories-row").append(
+                            "<ul id='" + item.categoryID + "' class='dishes-row " + item.id + "'>" +
+                            "<li id='dishes-cell'>" + item.id +
+
+                            "</li>" +
+                            "<li id='dishes-cell'>" + item.name +
+
+                            "</li>" +
+                            "<li id='dishes-cell' class = 'delete-dish'>" + "<span class = '" + item.id + "'>" + "Удалить" + "</span>" +
+
+                            "</li>" +
+                            "<li id='dishes-cell' class = 'update-dish'>" + "<span class = '" + item.id + "'>" + "Изменить" + "</span>" +
+
+                            "</li>" +
+
+                            
+                            "</ul>"
+
+                        );
+                        //console.log("#" + item.categoryID + " .categories-row");
+                    });
+                }
+                else { alert("noone"); }
+            }
+
+            var catSize = 0;
             //Получение категорий
             $.ajax({
                 url: "/Admin/GetCategory/",
                 type: "GET",
                 contentType: "application/json",
                 success: function (data) {
-                    getcategories(data);
+                    viewcategories(data);
+                    
                 },
                 error: function () {
                     alert("error");
@@ -61,8 +96,9 @@
                 }
 
             });
+          
             //Удаление категории
-            $(document).on("click", ".delete", function () {
+            $(document).on("click", ".delete-category", function () {
                 var id = $(this).children().attr('class');
                 $.ajax({
                     url: "/Admin/DelCategory/",
@@ -75,7 +111,7 @@
                     }),
                     dataType : "json",
                     success: function (response) {
-                        getcategories(response);
+                        viewcategories(response);
                     },
                     error: function () {
                         alert("error");
@@ -84,20 +120,54 @@
                 });
             });
             //Изменение категории
-            $(document).on("click", ".update", function () {
+            $(document).on("click", ".update-category", function () {
                 var id = $(this).children().attr('class');
                 console.log(id);
             });
+
+
             //Получение блюд по категории
-            $(document).on("click", ".dishes", function () {
+            $(document).on("click", "#dishes", function () {
+                var id = $(this).attr('class');
+               
+                if ($(this).prop('checked')) {
+                    $.ajax({
+                        url: "/Admin/GetDishes/" + id,
+                        type: "GET",
+                        contentType: "application/json",
+                        success: function (response) {
+                            viewdishes(response);
+                            //console.log(response);
+                        },
+                        error: function () {
+                            alert("error");
+                        },
+
+                    });
+                }
+                else {
+                    //console.log("#" + id + ".dishes-row");
+                    $("#" + id + ".dishes-row").remove();
+                }
+                    
+            });
+
+            //Удаление блюда
+            $(document).on("click", ".delete-dish", function () {
                 var id = $(this).children().attr('class');
-                //console.log(id);
+               // console.log(".dishes-row ." + id);
                 $.ajax({
-                    url: "/Admin/GetDishes/"+id,
-                    type: "GET",
+                    url: "/Admin/DelDish/",
+                    type: "POST",
+
                     contentType: "application/json",
+                    data: JSON.stringify({
+                        Id: id
+                    }),
+                    
+                    dataType: "json",
                     success: function (response) {
-                        console.log(response);
+                        $(".dishes-row." + id).remove();
                     },
                     error: function () {
                         alert("error");
@@ -113,7 +183,7 @@
 
     
 
-    <div class="item">
+    <div class="categories">
 
     </div>
 
@@ -136,17 +206,27 @@
     </div>
 
     <style>
-        .item {
+        .categories {
             display: table;
         }
 
-        .item-row {
+        .categories-row {
             display: table-row;
-       
             height: 25px;
         }
 
-        #item-cell {
+        #categories-cell {
+            display: table-cell;
+            padding: 0px 30px;
+        }
+
+
+        .dishes-row {
+            display: table-row;
+            height: 25px;
+        }
+
+        #dishes-cell {
             display: table-cell;
             padding: 0px 30px;
         }

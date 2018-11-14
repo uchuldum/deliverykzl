@@ -30,7 +30,7 @@ namespace Dolce_Vita.Controllers
 
 
         //Categories
-        public IActionResult Categories() 
+        public IActionResult Categories()
         {
             return View(db.Categories.ToList());
         }
@@ -78,9 +78,9 @@ namespace Dolce_Vita.Controllers
             return View();
         }
 
-        
-        
-       
+
+
+
         //Get Dishes 
         [HttpGet]
         public async Task<IList> GetDishes(int? id)
@@ -88,7 +88,7 @@ namespace Dolce_Vita.Controllers
             if (id == null)
                 return await db.Dishes.ToListAsync();
             else
-                return await db.Dishes.Where(x => x.CategoryID == id).Select(x => new { x.Id, x.Name, x.Price, x.Properties, x.CategoryID}).ToListAsync();
+                return await db.Dishes.Where(x => x.CategoryID == id).Select(x => new { x.Id, x.Name, x.Price, x.Properties, x.CategoryID }).ToListAsync();
         }
 
         //Add Dish
@@ -99,10 +99,30 @@ namespace Dolce_Vita.Controllers
             if (name == null)
                 return NotFound();
 
-            await db.Dishes.AddAsync(new Dish { Name = name , Price = price, Properties = property, CategoryID = category});
+            await db.Dishes.AddAsync(new Dish { Name = name, Price = price, Properties = property, CategoryID = category });
             await db.SaveChangesAsync();
 
             return RedirectToAction("Categories", "Admin");
+        }
+        //Delete Dish
+        public class Data
+        {
+            public int Id { get; set; }
+        }
+
+         
+        [HttpPost]
+        [ActionName("DelDish")]
+        public async Task<IList> DelDish([FromBody] Data data)
+        {
+            Dish _dish =  db.Dishes.FirstOrDefault(x => x.Id == data.Id);
+            if (_dish != null)
+            {
+                db.Remove(_dish);
+                await db.SaveChangesAsync();
+            }
+            return await db.Dishes.ToListAsync();
+            
         }
     }
 }
