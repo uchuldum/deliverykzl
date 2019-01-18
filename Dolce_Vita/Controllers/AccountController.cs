@@ -7,27 +7,14 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using System.Linq;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Dolce_Vita.Domain;
 using System;
 
 namespace Dolce_Vita.Controllers
 {
     public class AccountController : Controller
     {
-        private string Code(string str)
-        {
-            byte[] salt = new byte[128 / 8];
-            Console.WriteLine($"Salt: {Convert.ToBase64String(salt)}");
-
-            // derive a 256-bit subkey (use HMACSHA1 with 10,000 iterations)
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: str,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8));
-            return hashed;
-        }
+        private Shifr shifr = new Shifr();
 
         private DolceVitaContext _context;
         public AccountController(DolceVitaContext context)
@@ -43,7 +30,7 @@ namespace Dolce_Vita.Controllers
                 string userRoleName = "user";
 
                 string adminLogin = "admin";
-                string adminPassword = Code("123456");
+                string adminPassword = shifr.Code("123456");
 
                 // добавляем роли
                 Role adminRole = new Role { Name = adminRoleName };
@@ -73,7 +60,7 @@ namespace Dolce_Vita.Controllers
             {
                 User user = await _context.Users
                     .Include(u => u.Role)
-                    .FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == Code(model.Password));
+                    .FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == shifr.Code(model.Password));
                 if (user != null)
                 {
                     await Authenticate(user); // аутентификация

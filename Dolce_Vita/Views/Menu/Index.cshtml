@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Material Design Bootstrap</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="~/Patterns/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="~/Patterns/css/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="~/Patterns/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+
+    <main>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
+                <span class="navbar-brand">Categories</span>
+                <button class="navbar-toggler" type="button"
+                        data-toggle="collapse" data-target="#nextNav"
+                        aria-controls="nextNav" aria-expanded="false"
+                        aria-label="Toggle navigation">
+
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="nextNav">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">All</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </main>
+
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="~/Patterns/js/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="~/Patterns/js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="~/Patterns/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="~/Patterns/js/mdb.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            //VIEW CATEGORIES
+            function viewcategories(data) {
+                if (data.length >= 0) {
+                    $.each(data, function (i, item) {
+                        $(".navbar-nav").append(
+                            "<li class='nav-item id = '" + item.name + "'>" +
+                            "<a href='#' class='nav-link'>" + item.name + "</a>" +
+                            "</li>"
+
+                        );
+                    });
+                }
+                else { alert("noone"); }
+            }
+
+            //VIEW DISHES BY CATEGORY
+            function viewdishes(data) {
+
+                if (data.length >= 0) {
+                    $.each(data, function (i, item) {
+                        $("#" + item.categoryID + ".categories-row").append(
+                            "<ul id='" + item.categoryID + "' class='dishes-row " + item.id + "'>" +
+                            "<li id='dishes-cell'>" + item.id +
+
+                            "</li>" +
+                            "<li id='dishes-cell'>" + item.name +
+
+                            "</li>" +
+                            "<li id='dishes-cell' class = 'delete-dish'>" + "<span class = '" + item.id + "'>" + "Удалить" + "</span>" +
+
+                            "</li>" +
+                            "<li id='dishes-cell' class = 'update-dish'>" + "<span class = '" + item.id + "'>" + "Изменить" + "</span>" +
+
+                            "</li>" +
+
+
+                            "</ul>"
+
+                        );
+                        //console.log("#" + item.categoryID + " .categories-row");
+                    });
+                }
+                else { alert("noone"); }
+            }
+
+            //Получение категорий
+            $.ajax({
+                url: "/Menu/GetCategories/",
+                type: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    viewcategories(data);
+
+                },
+                error: function () {
+                    alert("error");
+
+                }
+
+            });
+
+
+            //Получение блюд по категории
+            $(document).on("click", "#dishes", function () {
+                var id = $(this).attr('class');
+
+                if ($(this).prop('checked')) {
+                    $.ajax({
+                        url: "/Menu/GetDishes/" + id,
+                        type: "GET",
+                        contentType: "application/json",
+                        success: function (response) {
+                            viewdishes(response);
+                            //console.log(response);
+                        },
+                        error: function () {
+                            alert("error");
+                        },
+
+                    });
+                }
+                else {
+                    //console.log("#" + id + ".dishes-row");
+                    $("#" + id + ".dishes-row").remove();
+                }
+
+            });
+
+        });
+
+    </script>
+
+
+</body>
+</html>
+
+
